@@ -1,0 +1,11 @@
+echo $PATH
+hello
+hfjf
+dkjkd
+echo $PATH
+djjdkd
+fghj
+djdj
+HI
+LOL
+dobavil
