@@ -1,0 +1,3 @@
+hello
+echo $PATH
+cat /bin/git
