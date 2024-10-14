@@ -1,2 +1,15 @@
-jj
-kk
+echo $PATH
+hello
+hfjf
+dkjkd
+echo $PATH
+djjdkd
+fghj
+djdj
+HI
+LOL
+dobavil
+cat /bin/git
+cat /bin
+cat /git
+cat /bin/git
