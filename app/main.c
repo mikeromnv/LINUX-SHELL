@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <signal.h>
 #include <stdint.h>
+#include <unistd.h>
+
 #define BUFFER_SIZE 1024 //буфер для ввода
 #define HISTORY_SIZE 1000 //для истории
 #define HISTORY_FILE "command_history.txt"
@@ -58,14 +60,10 @@ void read_binary(const char *filename){
   fclose(file);
 }
 
-/*void handle_sighup() {
-    printf("The program interrupted");
-    exit(0);
-}
-*/
 void handle_SIGHUP(int signal){
   if (signal == SIGHUP){
-    printf("The program interrupted");
+    printf("The program interrupted\n");
+    exit(0);
   }
 }
 
@@ -118,8 +116,9 @@ int main() {
     char input[BUFFER_SIZE];               // Буфер для ввода команд
     char history[HISTORY_SIZE][BUFFER_SIZE]; // История команд
     int history_count = 0;                  // Счётчик команд в истории
-    bool f = false;
-    do {    
+    
+    do {  
+        bool f = false;  
         printf("MIKE$ ");
         fflush(stdout);
         // Чтение ввода с клавиатуры, проверка на EOF (Ctrl+D)
@@ -158,7 +157,20 @@ int main() {
             f = true;
             continue;
         }
-        
+        //выполнение бинарника
+        if (strncmp(input, "run ", 4) == 0){
+            pid_t p = fork();
+            if (p == 0){
+              char *argv[] = { "sh", "-c", input + 4, 0 };
+              execvp(argv[0], argv);
+              fprintf(stderr, "Failed to exec shell on %s", input + 4);
+            
+              f = true;
+              exit(1);
+              //continue;
+            }
+            
+        }
         signal(SIGHUP, handle_SIGHUP);
         
         // 10 определить является ли диск загрузочным
@@ -179,6 +191,7 @@ int main() {
         }
         if (f == false){
           printf("There is no such command!\n");
+          
         }
         
         
@@ -192,6 +205,5 @@ int main() {
     return 0;
 }
 
-// kill
-// хендлеры 
-// signal тип сигнала что хотим сделать
+//execv - бинарник
+//fork
