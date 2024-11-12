@@ -40,3 +40,22 @@ run /bin/git
 jgj
 run /bin/git
 f
+run /bin/git
+j
+clear
+run /bin/git
+
+run /bin/git
+
+run /bin/git
+
+run /bin/git
+
+run /bin/git
+ 
+\l dev/loop9
+\l /dev/loop9
+\l loop9
+\l loop9
+\l loop9
+\l nvme0n1

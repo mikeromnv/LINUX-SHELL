@@ -79,11 +79,13 @@ void is_bootable_device(char* device_name) {
     char full_path[128];
     snprintf(full_path, sizeof(full_path), "/dev/%s", device_name);
 
+    printf("path: %s\n", full_path);
+
     // Открываем устройство для чтения
     FILE* device_file = fopen(full_path, "rb");
     if (device_file == NULL) {
         printf("Не удалось открыть диск %s!\n", device_name);
-        return;
+        //return;
     }
 
     // Переходим к 510 байту
@@ -116,7 +118,7 @@ int main() {
     char input[BUFFER_SIZE];               // Буфер для ввода команд
     char history[HISTORY_SIZE][BUFFER_SIZE]; // История команд
     int history_count = 0;                  // Счётчик команд в истории
-    
+    signal(SIGHUP, handle_SIGHUP);
     do {  
         bool f = false;  
         printf("MIKE$ ");
@@ -163,7 +165,7 @@ int main() {
             if (p == 0){
               char *argv[] = { "sh", "-c", input + 4, 0 };
               execvp(argv[0], argv);
-              fprintf(stderr, "Failed to exec shell on %s", input + 4);
+              fprintf(stderr, "Failed to exec shell on %s\n", input + 4);
             
               f = true;
               exit(1);
@@ -171,7 +173,9 @@ int main() {
             }
             
         }
-        signal(SIGHUP, handle_SIGHUP);
+        //signal(SIGHUP, handle_SIGHUP);
+        
+        
         
         // 10 определить является ли диск загрузочным
         if (strncmp(input, "\\l", 2) == 0) {
