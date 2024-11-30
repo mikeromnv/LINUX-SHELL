@@ -165,7 +165,6 @@ int main() {
               fprintf(stderr, "Failed to exec shell on %s\n", input + 4);
               f = true;
               exit(1);
-              
             }
             sleep(1);
             continue;
@@ -187,9 +186,9 @@ int main() {
         
         
         //12. получить дамп памяти по id процесса
-        if (strncmp(input, "\\proc ", 6) == 0) {
+        if (strncmp(input, "\\mem ", 5) == 0) {
             char* path;
-            asprintf(&path, "/proc/%s/map_files", input+6);
+            asprintf(&path, "/proc/%s/map_files", input+5);
 
             DIR* dir = opendir(path);
             if (dir) {
