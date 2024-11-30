@@ -11,9 +11,6 @@
 #include <stdint-gcc.h>
 #include <sys/stat.h>
 
-
-#define _GNU_SOURCE
-
 #define BUFFER_SIZE 1024 //буфер для ввода
 
 // обработчик сигнала sighup
@@ -74,7 +71,7 @@ void is_bootable_device(char* device_name) {
 
 // 12. по 'mem <procid>' получить дамп памяти процесса
 // Функция для объединения файлов в дамп
-bool appendToFile(char* path1, char* path2) {
+bool addToFile(char* path1, char* path2) {
     FILE *f1 = fopen(path1, "a");
     FILE *f2 = fopen(path2, "r");
     if (!f1 || !f2) {
@@ -91,7 +88,7 @@ bool appendToFile(char* path1, char* path2) {
     return true;
 }
 // 12. Создание дампа памяти процесса
-void makeDump(DIR* dir, char* path) {
+void DumpMake(DIR* dir, char* path) {
     FILE* res = fopen("res.txt", "w+");
     fclose(res);
     struct dirent* ent;
@@ -99,7 +96,7 @@ void makeDump(DIR* dir, char* path) {
     while ((ent = readdir(dir)) != NULL) {
 
         asprintf(&file_path, "%s/%s", path, ent->d_name);
-        if(!appendToFile("res.txt", file_path)) {
+        if(!addToFile("res.txt", file_path)) {
             return;
         }
     }
@@ -196,7 +193,7 @@ int main() {
 
             DIR* dir = opendir(path);
             if (dir) {
-                makeDump(dir, path);
+                DumpMake(dir, path);
             }
             else {
                 printf("Process not found\n");
